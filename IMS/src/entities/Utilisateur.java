@@ -15,7 +15,7 @@ public class Utilisateur {
 		try {
 			Conn conn = new Conn();
 			ResultSet rs;
-			String q = "Select * from Utilisateurs where ID =" + ID;
+			String q = "Select * from Utilisateurs where ID = " + ID + ";";
 			rs = conn.s.executeQuery(q);
 			rs.next();
 			
@@ -28,14 +28,19 @@ public class Utilisateur {
 	}
 	
 	public String Tag() {
-		return name + "-" + title;
+		return name + " - " + title;
+	}
+	
+	public static String TagfromID(int ID) {
+		Utilisateur agent = new Utilisateur(ID);
+		return agent.Tag();
 	}
 	
 	public static int getID(String name, String PW) {
 		try {
 			Conn conn = new Conn();
 			ResultSet rs;
-			String q = "Select ID from Utilisateurs where nom ='" + name + "' and MP = UNHEX(SHA1('"+PW+"')";
+			String q = "Select ID from Utilisateurs where nom ='" + name + "' and MP = UNHEX(SHA1('" + PW + "'));";
 			rs = conn.s.executeQuery(q);
 			if(rs.next()) {
 				return rs.getInt("ID");
@@ -44,5 +49,9 @@ public class Utilisateur {
 			e1.printStackTrace();
 		}
 		return -1;
+	}
+	
+	public int getID() {
+		return ID;
 	}
 }

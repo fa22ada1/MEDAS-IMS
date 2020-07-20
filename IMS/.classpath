@@ -2,5 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/org.eclipse.wb.swt_1.9.1.201812270937.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/swt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/PFA_workspace/LIB/mysql-connector-java-8.0.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
