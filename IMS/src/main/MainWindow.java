@@ -173,7 +173,13 @@ public class MainWindow {
 	    newMenuHeader.setMenu(newMenu);
 	    
 	    newEntreItem = new MenuItem(newMenu, SWT.PUSH);
-	    newEntreItem.setText("&Sortir");
+	    newEntreItem.setText("&D\u00E9clarer un entr\u00E9 de produit");
+	    
+	    newSortieItem = new MenuItem(newMenu, SWT.PUSH);
+	    newSortieItem.setText("&D\u00E9clarer un sortie de produit");
+	    
+	    newEntreItem.addSelectionListener(new newEntreItemListener());
+	    newSortieItem.addSelectionListener(new newSortieItemListener());
 	}
 	
 	class fileExitItemListener implements SelectionListener {
@@ -182,6 +188,22 @@ public class MainWindow {
 	    }
 		public void widgetDefaultSelected(SelectionEvent event) {
 			shell.dispose();
+		}
+	}
+	class newEntreItemListener implements SelectionListener {
+	    public void widgetSelected(SelectionEvent event) {
+	    	new EntreMenu(display, agent);
+	    }
+		public void widgetDefaultSelected(SelectionEvent event) {
+			new EntreMenu(display, agent);
+		}
+	}
+	class newSortieItemListener implements SelectionListener {
+	    public void widgetSelected(SelectionEvent event) {
+	    	new SortieMenu(display, agent);
+	    }
+		public void widgetDefaultSelected(SelectionEvent event) {
+			new SortieMenu(display, agent);
 		}
 	}
 }

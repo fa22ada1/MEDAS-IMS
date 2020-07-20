@@ -125,6 +125,8 @@ public class Login {
 						shell.setVisible(false);
 						new MainWindow(display, agent);
 					}
+				} else {
+					lblComment.setText("informations incompletes");
 				}
 			}
 		});

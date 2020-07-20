@@ -66,9 +66,9 @@ public class SortieMenu {
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(3, false));
 		FormData fd_composite = new FormData();
-		fd_composite.bottom = new FormAttachment(100, -27);
+		fd_composite.bottom = new FormAttachment(0, 520);
 		fd_composite.right = new FormAttachment(0, 670);
-		fd_composite.top = new FormAttachment(0, 31);
+		fd_composite.top = new FormAttachment(0, 30);
 		fd_composite.left = new FormAttachment(0, 30);
 		composite.setLayoutData(fd_composite);
 		
