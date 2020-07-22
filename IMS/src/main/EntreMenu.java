@@ -177,6 +177,10 @@ public class EntreMenu {
 				}
 				shell.setVisible(false);
 				new EntreMenu2(display, shell, PN, agent);
+				text.setText("");
+				text_1.setText("");
+				text_2.setText("");
+				styledText.setText("");
 			}
 		});
 

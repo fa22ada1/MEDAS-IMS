@@ -43,6 +43,7 @@ public class EntreMenu2 {
 	public EntreMenu2(Display D, Shell shell1,int PN ,Utilisateur agent) {
 		display = D;
 		shell = new Shell(display, SWT.CLOSE | SWT.TITLE);
+		this.shell1 = shell1;
 		this.PN = PN;
 
 		this.agent = agent;
@@ -135,7 +136,21 @@ public class EntreMenu2 {
 		GridData gd_styledText = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
 		gd_styledText.widthHint = 633;
 		styledText.setLayoutData(gd_styledText);
-		new Label(composite, SWT.NONE);
+		
+		Button btnRetour = new Button(composite, SWT.NONE);
+		btnRetour.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				combo.setText("");
+				text_1.setText("");
+				spinner.setSelection(0);
+				styledText.setText("");
+				shell.setVisible(false);
+				shell1.setVisible(true);
+				shell1.setFocus();
+			}
+		});
+		btnRetour.setText("Retour");
 		new Label(composite, SWT.NONE);
 		
 		Composite composite_1 = new Composite(composite, SWT.NONE);

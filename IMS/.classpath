@@ -5,5 +5,8 @@
 	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/org.eclipse.wb.swt_1.9.1.201812270937.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/swt.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/PFA_workspace/LIB/mysql-connector-java-8.0.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/ITEXT/io-7.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/ITEXT/kernel-7.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/ITEXT/layout-7.1.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
