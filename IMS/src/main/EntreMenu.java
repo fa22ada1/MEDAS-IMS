@@ -171,6 +171,7 @@ public class EntreMenu {
 
 						PN = Integer.parseInt(text_2.getText());
 					}
+					conn.close();
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

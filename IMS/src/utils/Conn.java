@@ -2,6 +2,7 @@ package utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Conn {
@@ -19,4 +20,13 @@ public class Conn {
     		E.printStackTrace();
     	}
     }
+	
+	public void close() {
+		try {
+			s.close();
+			c.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 }

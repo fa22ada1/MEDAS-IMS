@@ -21,6 +21,8 @@ public class Utils {
 			while(rs.next()) {
 				SNs.add(rs.getInt("PN"));
 			}
+			rs.close();
+			conn.close();
 		} catch(Exception E) {
     		E.printStackTrace();
     	}

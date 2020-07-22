@@ -187,6 +187,8 @@ public class SortieMenu {
 					for(String SN : SNs) {
 						q = "Delete from Produit where SN =" +SN+  ";";
 					}
+					rs.close();
+					conn.close();
 				} catch(Exception e1){
 					e1.printStackTrace();
 				}

@@ -67,10 +67,10 @@ public class Login {
 		lblMedasims.setBounds(0, 69, 427, 39);
 		lblMedasims.setText("MEDAS-IMS");
 
-		text = new Text(canvas, SWT.CENTER);
+		text = new Text(canvas, SWT.NONE);
 		text.setBounds(91, 153, 244, 31);
 
-		text_1 = new Text(canvas, SWT.PASSWORD | SWT.CENTER);
+		text_1 = new Text(canvas, SWT.PASSWORD);
 		text_1.setBounds(91, 214, 244, 31);
 
 		CLabel lblNewLabel = new CLabel(parent, SWT.NONE);

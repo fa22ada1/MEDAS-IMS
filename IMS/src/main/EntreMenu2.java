@@ -1,6 +1,8 @@
 package main;
 
 import java.sql.ResultSet;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
@@ -28,6 +30,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 
 public class EntreMenu2 {
 	Display display;
@@ -35,13 +38,12 @@ public class EntreMenu2 {
 	Shell shell1;
 	Utilisateur agent;
 	int PN;
-	
-	private Text text;
 	private Text text_1;
 
-	public EntreMenu2(Display D, Shell shell,int PN ,Utilisateur agent) {
+	public EntreMenu2(Display D, Shell shell1,int PN ,Utilisateur agent) {
 		display = D;
 		shell = new Shell(display, SWT.CLOSE | SWT.TITLE);
+		this.PN = PN;
 
 		this.agent = agent;
 
@@ -88,8 +90,27 @@ public class EntreMenu2 {
 		lblNewLabel_1.setText("Fournisseur");
 		new Label(composite, SWT.NONE);
 		
-		text = new Text(composite, SWT.BORDER);
-		text.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		Combo combo = new Combo(composite, SWT.NONE);
+		ArrayList<String> four = new ArrayList<String>();
+		try {
+			Conn conn = new Conn();
+			ResultSet rs;
+			String q = "Select * from Fournisseur";
+			rs = conn.s.executeQuery(q);
+			while(rs.next()) {
+				four.add(rs.getString("label"));
+			}
+			rs.close();
+			conn.close();
+		} catch(Exception E) {
+    		E.printStackTrace();
+    	}			
+		String[] Four = new String[four.size()];
+		for (int j = 0; j < four.size(); j++) { 
+	            Four[j] = four.get(j); 
+	    }
+		combo.setItems(Four);
+		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		
 		Label lblLesNombreDe = new Label(composite, SWT.NONE);
 		lblLesNombreDe.setText("les nombre de serie");
@@ -125,7 +146,7 @@ public class EntreMenu2 {
 		btnAnnuler.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				text.setText("");
+				combo.setText("");
 				text_1.setText("");
 				spinner.setSelection(0);
 				styledText.setText("");
@@ -135,27 +156,58 @@ public class EntreMenu2 {
 		btnAnnuler.setText("annuler");
 		
 		Button btnConfirmer = new Button(composite_1, SWT.NONE);
-		btnAnnuler.addSelectionListener(new SelectionAdapter() {
+		btnConfirmer.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if(text.getText().trim().contentEquals("") | spinner.getText().trim().contentEquals("") | text_1.getText().trim().contentEquals("")) {
+				if(combo.getText().trim().contentEquals("") | spinner.getText().trim().contentEquals("") | text_1.getText().trim().contentEquals("")) {
 					Error.setText("veuillez remplir toutes les cases");
 					return;
 				}
 				int N = spinner.getSelection();
-				ArrayList<String> four = new ArrayList<String>();
+				String note = styledText.getText();
+				String[] SNs = text_1.getText().trim().split(";");
+				if(SNs.length != N) {
+					Error.setText("veuillez verifier le nombre de SNs");
+					return;
+				}
+				DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				LocalDateTime now = LocalDateTime.now();
 				try {
 					Conn conn = new Conn();
-					ResultSet rs;
-					String q = "Select * from Fournisseur";
+					ResultSet rs, rs1;
+					int ProdId = 0;
+					int fourId = 0;
+					
+					String q = "Select ID from Prod where PN = " + PN + ";";
 					rs = conn.s.executeQuery(q);
 					while(rs.next()) {
-						four.add(rs.getString("label"));
+						ProdId = rs.getInt("Id");
 					}
-				} catch(Exception E) {
-		    		E.printStackTrace();
-		    	}
-				
+					String four = combo.getText();
+					
+					q = "Select id from fournisseur where label ='" + four + "';";
+					rs1 = conn.s.executeQuery(q);
+					while(rs1.next()) {
+						fourId = rs1.getInt("Id");
+					}
+					
+					q = " insert into entre (ProdID, fournisseurid, agentid, num, dateachat, note) values"
+							+ "(" + ProdId + "," + fourId + ","+ agent.getID() +","+ N +",'"+ dtf.format(now) +"','"+ note +"');";
+					conn.s.executeUpdate(q);
+					
+					q = "update Prod set Stock = Stock +" +N+ " Where Id =" +ProdId+ ";";
+					conn.s.executeUpdate(q);
+					
+					for(String SN : SNs) {
+						q = "insert into Produit (SN, ProdID) values (" +SN+  ", " + ProdId + ");";
+					}
+					rs.close();
+					rs1.close();
+					conn.close();
+				} catch(Exception e1){
+					e1.printStackTrace();
+				}
+				shell.setVisible(false);
 			}			
 		});
 		btnConfirmer.setText("confirmer");

@@ -22,6 +22,9 @@ public class Utilisateur {
 			name = rs.getString("nom");
 			title = rs.getString("titre");
 			rang = rs.getInt("rang");
+			
+			rs.close();
+			conn.close();
 		} catch(Exception e1){
 			e1.printStackTrace();
 		}
@@ -45,6 +48,8 @@ public class Utilisateur {
 			if(rs.next()) {
 				return rs.getInt("ID");
 			}
+			rs.close();
+			conn.close();
 		} catch(Exception e1){
 			e1.printStackTrace();
 		}

@@ -26,6 +26,8 @@ public class Produit {
 			PN = rs.getInt("pn");
 			stock = rs.getInt("stock");
 			note = rs.getString("note");
+			rs.close();
+			conn.close();
 		} catch(Exception e1){
 			e1.printStackTrace();
 		}
@@ -54,6 +56,8 @@ public class Produit {
 			while(rs.next()) {
 				IDs1.add(rs.getInt("ID"));
 			}
+			rs.close();
+			conn.close();
 		} catch(Exception e1){
 			e1.printStackTrace();
 		}

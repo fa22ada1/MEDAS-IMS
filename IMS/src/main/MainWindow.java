@@ -35,7 +35,7 @@ public class MainWindow {
 	private Table table_1;
 	
 	Menu menuBar, fileMenu, newMenu;
-	MenuItem fileMenuHeader, newMenuHeader;
+	MenuItem fileMenuHeader, fileRefreshItem, newMenuHeader;
 	MenuItem fileExitItem, newEntreItem, newSortieItem;
 	
 	public MainWindow(Display display, Utilisateur agent) {
@@ -100,10 +100,11 @@ public class MainWindow {
 		table_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		table_1.setHeaderVisible(true);
 		
-		setTables();
+		setTables(table, table_1);
 	}
 	
-	private void setTables() {
+	private static void setTables(Table table, Table table_1) {
+		table.removeAll();
 		while ( table.getColumnCount() > 0 ) {
 		    table.getColumns()[ 0 ].dispose();
 		}
@@ -118,7 +119,7 @@ public class MainWindow {
 	    	TableItem item = new TableItem(table,SWT.NONE);
 	    	item.setText(new String[]{P.getType() ,P.getMarque() ,Integer.toString(P.getPN()) ,Integer.toString(P.getStock())});
 	    }
-	    
+	    table_1.removeAll();
 	    while ( table_1.getColumnCount() > 0 ) {
 		    table_1.getColumns()[ 0 ].dispose();
 		}
@@ -148,6 +149,8 @@ public class MainWindow {
 	    			item.setBackground(0, Utils.PC2);
 	    		}
 	    	}
+	    	rs.close();
+			conn.close();
 	    } catch(Exception e){
 			e.printStackTrace();
 		}
@@ -165,7 +168,11 @@ public class MainWindow {
 	    fileExitItem = new MenuItem(fileMenu, SWT.PUSH);
 	    fileExitItem.setText("&Sortir");
 	    
+	    fileRefreshItem = new MenuItem(fileMenu, SWT.PUSH);
+	    fileRefreshItem.setText("&Actualiser");
+	    
 	    fileExitItem.addSelectionListener(new fileExitItemListener());
+	    fileRefreshItem.addSelectionListener(new fileRefreshItemListener());
 	    
 	    newMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 	    newMenuHeader.setText("&Nouveau");
@@ -173,10 +180,10 @@ public class MainWindow {
 	    newMenuHeader.setMenu(newMenu);
 	    
 	    newEntreItem = new MenuItem(newMenu, SWT.PUSH);
-	    newEntreItem.setText("&D\u00E9clarer un entr\u00E9 de produit");
+	    newEntreItem.setText("&D\u00E9clarer une entr\u00E9 de produit");
 	    
 	    newSortieItem = new MenuItem(newMenu, SWT.PUSH);
-	    newSortieItem.setText("&D\u00E9clarer un sortie de produit");
+	    newSortieItem.setText("&D\u00E9clarer une sortie de produit");
 	    
 	    newEntreItem.addSelectionListener(new newEntreItemListener());
 	    newSortieItem.addSelectionListener(new newSortieItemListener());
@@ -188,6 +195,14 @@ public class MainWindow {
 	    }
 		public void widgetDefaultSelected(SelectionEvent event) {
 			shell.dispose();
+		}
+	}
+	class fileRefreshItemListener implements SelectionListener {
+	    public void widgetSelected(SelectionEvent event) {
+	    	setTables(table, table_1);
+	    }
+		public void widgetDefaultSelected(SelectionEvent event) {
+			setTables(table, table_1);
 		}
 	}
 	class newEntreItemListener implements SelectionListener {
