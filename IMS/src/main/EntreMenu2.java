@@ -174,7 +174,7 @@ public class EntreMenu2 {
 				LocalDateTime now = LocalDateTime.now();
 				try {
 					Conn conn = new Conn();
-					ResultSet rs, rs1;
+					ResultSet rs, rs1, rs2;
 					int ProdId = 0;
 					int fourId = 0;
 					
@@ -187,19 +187,28 @@ public class EntreMenu2 {
 					
 					q = "Select id from fournisseur where label ='" + four + "';";
 					rs1 = conn.s.executeQuery(q);
-					while(rs1.next()) {
+					if(rs1.next()) {
 						fourId = rs1.getInt("Id");
+					} else {
+						q = "insert into fournisseur (label) values ('" + four + "');";
+						conn.s.executeUpdate(q);
+						q = "Select id from fournisseur where label ='" + four + "';";
+						rs2 = conn.s.executeQuery(q);
+						rs2.next();
+						fourId = rs2.getInt("Id");
+						rs2.close();
 					}
 					
 					q = " insert into entre (ProdID, fournisseurid, agentid, num, dateachat, note) values"
 							+ "(" + ProdId + "," + fourId + ","+ agent.getID() +","+ N +",'"+ dtf.format(now) +"','"+ note +"');";
 					conn.s.executeUpdate(q);
 					
-					q = "update Prod set Stock = Stock +" +N+ " Where Id =" +ProdId+ ";";
+					q = "update Prod set Stock = Stock + " +N+ " Where Id =" +ProdId+ ";";
 					conn.s.executeUpdate(q);
 					
 					for(String SN : SNs) {
-						q = "insert into Produit (SN, ProdID) values (" +SN+  ", " + ProdId + ");";
+						q = "insert into Produit (SN, ProdID) values (" + SN + ", " + ProdId + ");";
+						conn.s.executeUpdate(q);
 					}
 					rs.close();
 					rs1.close();

@@ -181,11 +181,12 @@ public class SortieMenu {
 					conn.s.executeUpdate(q);
 					rs.close();
 					
-					q = "update Prod set Stock = Stock -" +N+ " Where Id =" +ProdId+ ";";
+					q = "update Prod set Stock = Stock - " +N+ " Where Id =" +ProdId+ ";";
 					conn.s.executeUpdate(q);
 					
 					for(String SN : SNs) {
-						q = "Delete from Produit where SN =" +SN+  ";";
+						q = "Delete from Produit where SN = " +SN+  " ;";
+						conn.s.executeUpdate(q);
 					}
 					rs.close();
 					conn.close();

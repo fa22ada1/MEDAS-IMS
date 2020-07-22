@@ -30,8 +30,8 @@ public class Login {
 	
 	CLabel lblComment;
 
-	public Login(Display D) {
-		display = D;
+	public Login() {
+		display = new Display();
 		shell = new Shell(display, SWT.NO_TRIM);
 
 		shell.setSize(800, 445);
@@ -133,7 +133,6 @@ public class Login {
 	}
 
 	public static void main(String[] args) {
-		Display D = new Display();
-		new Login(D);
+		new Login();
 	}
 }

@@ -3,9 +3,15 @@ package utils;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.wb.swt.SWTResourceManager;
+
+import main.TechnicalSheet;
 
 public class Utils {
 	public static Color PC1 = SWTResourceManager.getColor(60, 110, 113);
@@ -32,5 +38,16 @@ public class Utils {
 	        SNs1[i] = Integer.toString(SNs.get(i).intValue());
 	    }
 		combo.setItems(SNs1);
+	}
+	
+	public static void buttonF(Display display, Button[] buttons, int ID) {
+		for(int i=0; i<buttons.length; i++) {
+			buttons[i].addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					new TechnicalSheet(display, ID);
+				}
+			});
+		}
 	}
 }

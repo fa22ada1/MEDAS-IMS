@@ -33,6 +33,9 @@ public class Produit {
 		}
 	}
 	
+	public int getID() {
+		return ID;
+	}
 	public String getType() {
 		return type;
 	}
@@ -44,6 +47,9 @@ public class Produit {
 	}
 	public int getStock() {
 		return stock;
+	}
+	public String getNote() {
+		return note;
 	}
 
 	public static int[] allIDs() {
@@ -72,5 +78,27 @@ public class Produit {
 	public static int PNfromID(int ID) {
 		Produit P = new Produit(ID);
 		return P.getPN();
+	}
+	
+	public static String[] getSNs(int ID) {
+		ArrayList<String> SNs = new ArrayList<>();
+		try {
+			Conn conn = new Conn();
+			ResultSet rs;
+			String q = "Select SN from Produit where Prodid = " + ID + ";";
+			rs = conn.s.executeQuery(q);
+			while(rs.next()) {
+				SNs.add(Integer.toString(rs.getInt("SN")));
+			}
+			rs.close();
+			conn.close();
+		} catch(Exception e1){
+			e1.printStackTrace();
+		}
+		String[] res = new String[SNs.size()];
+		for (int j = 0; j < SNs.size(); j++) { 
+	            res[j] = SNs.get(j); 
+	    }
+		return res;
 	}
 }

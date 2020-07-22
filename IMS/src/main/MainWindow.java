@@ -5,12 +5,15 @@ import java.sql.ResultSet;
 import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -103,21 +106,37 @@ public class MainWindow {
 		setTables(table, table_1);
 	}
 	
-	private static void setTables(Table table, Table table_1) {
+	private void setTables(Table table, Table table_1) {
 		table.removeAll();
 		while ( table.getColumnCount() > 0 ) {
 		    table.getColumns()[ 0 ].dispose();
 		}
-		String[] titles = { "Produit", "Marque", "NP", "Stock"};
+		String[] titles = { "Produit", "Marque", "NP", "Stock", "..."};
 	    for (int i = 0; i < titles.length; i++) {
 	      TableColumn column = new TableColumn(table, SWT.NONE);
 	      column.setWidth(200);
 	      column.setText(titles[i]);
 	    }
-	    for(int ID : Produit.allIDs()) {
+	    int[] IDs = Produit.allIDs();
+	    Button buttons[] = new Button[IDs.length];
+	    int j=0;
+	    for(int ID : IDs) {
 	    	Produit P = new Produit(ID);
 	    	TableItem item = new TableItem(table,SWT.NONE);
 	    	item.setText(new String[]{P.getType() ,P.getMarque() ,Integer.toString(P.getPN()) ,Integer.toString(P.getStock())});
+	    	
+	    	TableEditor editor = new TableEditor(table);
+	    	Button button = new Button(table, SWT.PUSH);
+	    	button.setSize(new Point(30,30));
+	        editor.minimumWidth = button.getSize().x;
+	        button.pack();
+	        editor.horizontalAlignment = SWT.LEFT;
+	        editor.setEditor(button, item, 4);
+	        
+	        buttons[j] = button;
+	        j++;
+	        
+	        Utils.buttonF(display, buttons, ID);
 	    }
 	    table_1.removeAll();
 	    while ( table_1.getColumnCount() > 0 ) {
