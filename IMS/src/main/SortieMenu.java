@@ -36,7 +36,7 @@ import entities.Utilisateur;
 public class SortieMenu {
 	Display display;
 	Shell shell;
-	Utilisateur agent;
+	private Utilisateur agent;
 	
 	private Text text;
 	

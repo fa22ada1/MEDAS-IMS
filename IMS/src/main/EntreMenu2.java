@@ -35,9 +35,9 @@ import org.eclipse.swt.widgets.Combo;
 public class EntreMenu2 {
 	Display display;
 	Shell shell;
-	Shell shell1;
-	Utilisateur agent;
-	int PN;
+	private Shell shell1;
+	private Utilisateur agent;
+	private int PN;
 	private Text text_1;
 
 	public EntreMenu2(Display D, Shell shell1,int PN ,Utilisateur agent) {

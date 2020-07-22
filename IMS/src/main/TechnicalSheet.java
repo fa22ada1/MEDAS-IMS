@@ -22,7 +22,7 @@ import org.eclipse.swt.custom.StyledText;
 public class TechnicalSheet {
 	Display display;
 	Shell shell;
-	Produit P;
+	private Produit P;
 
 	public TechnicalSheet(Display D, int ID) {
 		display = D;

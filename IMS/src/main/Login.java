@@ -4,10 +4,15 @@ import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -16,21 +21,16 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 
-import utils.Utils;
 import entities.Utilisateur;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import utils.Utils;
 
 public class Login {
 	Display display;
 	Shell shell;
 	private Text text;
 	private Text text_1;
-	
-	CLabel lblComment;
 
-	public Login() {
+	private Login() {
 		display = new Display();
 		shell = new Shell(display, SWT.NO_TRIM);
 
@@ -72,6 +72,16 @@ public class Login {
 
 		text_1 = new Text(canvas, SWT.PASSWORD);
 		text_1.setBounds(91, 214, 244, 31);
+		
+		text.addTraverseListener(new TraverseListener() {
+			  @Override
+			  public void keyTraversed(TraverseEvent event) {
+			    if (event.detail == SWT.TRAVERSE_RETURN) {
+			      event.doit = false;
+			      text_1.setFocus();
+			    }
+			  }
+		});
 
 		CLabel lblNewLabel = new CLabel(parent, SWT.NONE);
 		fd_canvas.left = new FormAttachment(lblNewLabel, 28);

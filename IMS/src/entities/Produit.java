@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import utils.Conn;
 
 public class Produit {
-	int ID;
-	String type;
-	String marque;
-	int PN;
-	int stock;
-	String note;
+	private int ID;
+	private String type;
+	private String marque;
+	private int PN;
+	private int stock;
+	private String note;
 	
 	public Produit(int ID){
 		this.ID = ID;

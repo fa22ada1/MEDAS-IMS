@@ -33,13 +33,13 @@ import utils.Utils;
 public class MainWindow {
 	Display display;
 	Shell shell;
-	Utilisateur agent;
+	private Utilisateur agent;
 	private Table table;
 	private Table table_1;
 	
-	Menu menuBar, fileMenu, newMenu;
-	MenuItem fileMenuHeader, fileRefreshItem, newMenuHeader;
-	MenuItem fileExitItem, newEntreItem, newSortieItem;
+	private Menu menuBar, fileMenu, newMenu;
+	private MenuItem fileMenuHeader, fileRefreshItem, newMenuHeader;
+	private MenuItem fileExitItem, newEntreItem, newSortieItem;
 	
 	public MainWindow(Display display, Utilisateur agent) {
 		this.display = display;

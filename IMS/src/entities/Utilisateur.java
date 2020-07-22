@@ -5,10 +5,10 @@ import java.sql.ResultSet;
 import utils.Conn;
 
 public class Utilisateur {
-	int ID;
-	String name;
-	String title;
-	int rang;
+	private int ID;
+	private String name;
+	private String title;
+	private int rang;
 	
 	public Utilisateur(int ID) {
 		this.ID = ID;
@@ -59,4 +59,9 @@ public class Utilisateur {
 	public int getID() {
 		return ID;
 	}
+	
+	public int getRang() {
+		return rang;
+	}
+	
 }

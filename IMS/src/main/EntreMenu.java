@@ -29,12 +29,12 @@ import utils.Utils;
 public class EntreMenu {
 	Display display;
 	Shell shell;
-	Utilisateur agent;
+	private Utilisateur agent;
 
 	private Text text;
 	private Text text_1;
 	private Text text_2;
-	public Boolean New = true;
+	private Boolean New = true;
 
 	public EntreMenu(Display D, Utilisateur agent) {
 		display = D;
