@@ -3,21 +3,20 @@ package main;
 import javax.annotation.PostConstruct;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Shell;
 
 import entities.Produit;
-
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.custom.StyledText;
 
 public class TechnicalSheet {
 	Display display;
@@ -44,7 +43,7 @@ public class TechnicalSheet {
 	@PostConstruct
 	private void create(Composite parent) {
 		parent.setLayout(new FormLayout());
-
+		
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new GridLayout(3, false));
 		FormData fd_composite = new FormData();
@@ -60,58 +59,63 @@ public class TechnicalSheet {
 		new Label(composite, SWT.NONE);
 		
 		Label lblProduit = new Label(composite, SWT.NONE);
+		lblProduit.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		lblProduit.setText("Produit");
 		new Label(composite, SWT.NONE);
 		
-		Label lblNewLabel_1 = new Label(composite, SWT.NONE);
-		lblNewLabel_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-		lblNewLabel_1.setText(P.getType());
+		Label lblProduit1 = new Label(composite, SWT.NONE);
+		lblProduit1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblProduit1.setText(P.getType());
 		
-		Label lblNewLabel = new Label(composite, SWT.NONE);
-		lblNewLabel.setText("Marque");
+		Label lblMarque = new Label(composite, SWT.NONE);
+		lblMarque.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblMarque.setText("Marque");
 		new Label(composite, SWT.NONE);
 		
-		Label label = new Label(composite, SWT.NONE);
-		label.setText(P.getMarque());
+		Label lblMarque1 = new Label(composite, SWT.NONE);
+		lblMarque1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblMarque1.setText(P.getMarque());
 		
 		Label lblNombreDeProduit = new Label(composite, SWT.NONE);
+		lblNombreDeProduit.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		lblNombreDeProduit.setText("Nombre de Produit");
 		new Label(composite, SWT.NONE);
 		
-		Label label_1 = new Label(composite, SWT.NONE);
-		label_1.setText(Integer.toString(P.getPN()));
+		Label lblNombreDeProduit1 = new Label(composite, SWT.NONE);
+		lblNombreDeProduit1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblNombreDeProduit1.setText(Integer.toString(P.getPN()));
 		
-		Label lblQuantiteEnStock = new Label(composite, SWT.NONE);
-		lblQuantiteEnStock.setText("Quantite en stock");
+		Label lblStock = new Label(composite, SWT.NONE);
+		lblStock.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblStock.setText("Quantite en stock");
 		new Label(composite, SWT.NONE);
 		
-		Label label_2 = new Label(composite, SWT.NONE);
-		label_2.setText(Integer.toString(P.getStock()));
+		Label lblStock1 = new Label(composite, SWT.NONE);
+		lblStock1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblStock1.setText(Integer.toString(P.getStock()));
 		
-		Label lblLesNombresDe = new Label(composite, SWT.NONE);
-		lblLesNombresDe.setText("Les Nombres de serie en stock");
+		Label lblnum = new Label(composite, SWT.NONE);
+		lblnum.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+		lblnum.setText("Nombres de serie");
 		new Label(composite, SWT.NONE);
 		
 		List list = new List(composite, SWT.BORDER | SWT.V_SCROLL);
+		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		list.setEnabled(false);
-		list.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 3));
 		
 		String[] SNs = Produit.getSNs(P.getID());
 		for (int i = 0; i < SNs.length; i++) {
 		      list.add(SNs[i]);
 		}
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
-		new Label(composite, SWT.NONE);
 		
 		Label lblNote = new Label(composite, SWT.NONE);
+		lblNote.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		lblNote.setText("Note");
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
 		StyledText styledText = new StyledText(composite, SWT.BORDER);
-		styledText.setEnabled(false);
+		styledText.setEditable(false);
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
 		styledText.setText(P.getNote());
 	}

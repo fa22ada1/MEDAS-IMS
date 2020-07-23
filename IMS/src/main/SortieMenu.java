@@ -10,6 +10,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
@@ -127,6 +129,16 @@ public class SortieMenu {
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
 		
+		text.addTraverseListener(new TraverseListener() {
+			  @Override
+			  public void keyTraversed(TraverseEvent event) {
+			    if (event.detail == SWT.TRAVERSE_RETURN) {
+			      event.doit = false;
+			      styledText.setFocus();
+			    }
+			  }
+		});
+		
 		Composite composite_2 = new Composite(composite, SWT.NONE);
 		composite_2.setLayout(new FillLayout(SWT.HORIZONTAL));
 		composite_2.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1));
@@ -169,23 +181,29 @@ public class SortieMenu {
 				
 				try {
 					Conn conn = new Conn();
-					ResultSet rs;
+					ResultSet rs, rs1;
 					
 					String q = "Select ID from Prod where PN =" + PN;
 					rs = conn.s.executeQuery(q);
 					rs.next();
 					int ProdId = rs.getInt("Id");
 					
-					q = " insert into sortie (label, ProdID, num, Datesortie, agentid, note) values"
+					q = " insert into sortie (label, ProdID, num, Datesortie, agentid, note) values "
 							+ "('"+ cause +"',"+ ProdId +","+ N +",'"+ dtf.format(now) +"',"+ agent.getID() +",'"+ note +"');";
 					conn.s.executeUpdate(q);
 					rs.close();
+					
+					q = "Select LAST_INSERT_ID();";
+					rs1 = conn.s.executeQuery(q);
+					rs1.next();
+					int I = rs1.getInt(1);
+					
 					
 					q = "update Prod set Stock = Stock - " +N+ " Where Id =" +ProdId+ ";";
 					conn.s.executeUpdate(q);
 					
 					for(String SN : SNs) {
-						q = "Delete from Produit where SN = " +SN+  " ;";
+						q = "update Produit set idsortie = " + I + " Where SN =" + SN + ";";
 						conn.s.executeUpdate(q);
 					}
 					rs.close();

@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/ITEXT/io-7.1.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/ITEXT/kernel-7.1.3.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/ITEXT/layout-7.1.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hp/Desktop/Medasys/Tools/ITEXT/itextpdf-5.4.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -6,6 +6,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -34,7 +36,7 @@ public class EntreMenu {
 	private Text text;
 	private Text text_1;
 	private Text text_2;
-	private Boolean New = true;
+	private Boolean New = false;
 
 	public EntreMenu(Display D, Utilisateur agent) {
 		display = D;
@@ -125,6 +127,36 @@ public class EntreMenu {
 		styledText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 2));
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
+		
+		text.addTraverseListener(new TraverseListener() {
+			  @Override
+			  public void keyTraversed(TraverseEvent event) {
+			    if (event.detail == SWT.TRAVERSE_RETURN) {
+			      event.doit = false;
+			      text_1.setFocus();
+			    }
+			  }
+		});
+		
+		text_1.addTraverseListener(new TraverseListener() {
+			  @Override
+			  public void keyTraversed(TraverseEvent event) {
+			    if (event.detail == SWT.TRAVERSE_RETURN) {
+			      event.doit = false;
+			      text_2.setFocus();
+			    }
+			  }
+		});
+		
+		text_2.addTraverseListener(new TraverseListener() {
+			  @Override
+			  public void keyTraversed(TraverseEvent event) {
+			    if (event.detail == SWT.TRAVERSE_RETURN) {
+			      event.doit = false;
+			      styledText.setFocus();
+			    }
+			  }
+		});
 
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1));
@@ -153,12 +185,6 @@ public class EntreMenu {
 				try {
 					Conn conn = new Conn();
 					if (New) {
-						if (combo.getText().trim().contentEquals("")) {
-							Error1.setText("veuillez choisir une valeur");
-							return;
-						}
-						PN = Integer.parseInt(combo.getText());
-					} else {
 						if (text.getText().trim().contentEquals("") | text_1.getText().trim().contentEquals("")
 								| text_1.getText().trim().contentEquals("")) {
 							Error2.setText("veuillez remplir toutes les cases");
@@ -170,6 +196,12 @@ public class EntreMenu {
 						conn.s.executeUpdate(q1);
 
 						PN = Integer.parseInt(text_2.getText());
+					} else {
+						if (combo.getText().trim().contentEquals("")) {
+							Error1.setText("veuillez choisir une valeur");
+							return;
+						}
+						PN = Integer.parseInt(combo.getText());
 					}
 					conn.close();
 				} catch (Exception e1) {
@@ -187,16 +219,26 @@ public class EntreMenu {
 		btnRadioButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				New = true;
+				New = false;
 				Error2.setText("");
+				combo.setEnabled(true);
+				text.setEnabled(false);
+				text_1.setEnabled(false);
+				text_2.setEnabled(false);
+				styledText.setEnabled(false);
 			}
 		});
 
 		btnRadioButton_1.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				New = false;
+				New = true;
 				Error1.setText("");
+				combo.setEnabled(false);
+				text.setEnabled(true);
+				text_1.setEnabled(true);
+				text_2.setEnabled(true);
+				styledText.setEnabled(true);
 			}
 		});
 	}

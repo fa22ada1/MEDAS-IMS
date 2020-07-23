@@ -1,6 +1,7 @@
 package main;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import javax.annotation.PostConstruct;
 
@@ -46,7 +47,7 @@ public class MainWindow {
 		this.agent = agent;
 		
 		shell = new Shell(display);
-		shell.setImage(new Image(display, "src\\icons\\MEDASIMS_LOGO.ico"));
+		shell.setImage(new Image(display, "src\\icons\\Org-Logo.ico"));
 		shell.setText("Menu declaration d'achat");
 		createMenuBar();
 		create(shell);
@@ -56,7 +57,7 @@ public class MainWindow {
 			if (!display.readAndDispatch())
 				display.sleep();
 		}
-		display.dispose();
+		this.display.dispose();
 	}
 
 	@PostConstruct
@@ -103,10 +104,10 @@ public class MainWindow {
 		table_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		table_1.setHeaderVisible(true);
 		
-		setTables(table, table_1);
+		setTables();
 	}
 	
-	private void setTables(Table table, Table table_1) {
+	private void setTables() {
 		table.removeAll();
 		while ( table.getColumnCount() > 0 ) {
 		    table.getColumns()[ 0 ].dispose();
@@ -118,8 +119,7 @@ public class MainWindow {
 	      column.setText(titles[i]);
 	    }
 	    int[] IDs = Produit.allIDs();
-	    Button buttons[] = new Button[IDs.length];
-	    int j=0;
+	    ArrayList<Button> buttons = new ArrayList<Button>();
 	    for(int ID : IDs) {
 	    	Produit P = new Produit(ID);
 	    	TableItem item = new TableItem(table,SWT.NONE);
@@ -133,21 +133,22 @@ public class MainWindow {
 	        editor.horizontalAlignment = SWT.LEFT;
 	        editor.setEditor(button, item, 4);
 	        
-	        buttons[j] = button;
-	        j++;
+	        buttons.add(button);
 	        
 	        Utils.buttonF(display, buttons, ID);
 	    }
+	    
 	    table_1.removeAll();
 	    while ( table_1.getColumnCount() > 0 ) {
 		    table_1.getColumns()[ 0 ].dispose();
 		}
-		String[] titles1 = { "Type", "NP", "Nombre", "Agent", "Date"};
+		String[] titles1 = { "Type", "NP", "Nombre", "Agent", "Date", "Raport"};
 	    for (int i = 0; i < titles1.length; i++) {
 	      TableColumn column = new TableColumn(table_1, SWT.NONE);
 	      column.setWidth(200);
 	      column.setText(titles1[i]);
 	    }
+	    buttons = new ArrayList<Button>();
 	    try {
 	    	Conn conn = new Conn();	 
 	    	ResultSet rs;
@@ -155,7 +156,8 @@ public class MainWindow {
 	    					+ "from entre "
 	    					+ "UNION "
 	    					+ "Select prodid, agentid, num, datesortie, label "
-	    					+ "from sortie;";
+	    					+ "from sortie "
+	    					+ "order by date;";
 	    	rs = conn.s.executeQuery(q);
 	    	while(rs.next()) {
 	    		TableItem item = new TableItem(table_1,SWT.NONE);
@@ -167,6 +169,17 @@ public class MainWindow {
 	    		} else {
 	    			item.setBackground(0, Utils.PC2);
 	    		}
+	    		
+	    		TableEditor editor = new TableEditor(table_1);
+		    	Button button = new Button(table_1, SWT.PUSH);
+		    	button.setSize(new Point(30,30));
+		        editor.minimumWidth = button.getSize().x;
+		        editor.horizontalAlignment = SWT.LEFT;
+		        editor.setEditor(button, item, 5);
+		        
+		        buttons.add(button);
+		        
+		        //Utils.buttonF(display, buttons, ID); TODO
 	    	}
 	    	rs.close();
 			conn.close();
@@ -218,10 +231,10 @@ public class MainWindow {
 	}
 	class fileRefreshItemListener implements SelectionListener {
 	    public void widgetSelected(SelectionEvent event) {
-	    	setTables(table, table_1);
+	    	setTables();
 	    }
 		public void widgetDefaultSelected(SelectionEvent event) {
-			setTables(table, table_1);
+			setTables();
 		}
 	}
 	class newEntreItemListener implements SelectionListener {

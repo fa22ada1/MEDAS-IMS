@@ -40,9 +40,9 @@ public class Utils {
 		combo.setItems(SNs1);
 	}
 	
-	public static void buttonF(Display display, Button[] buttons, int ID) {
-		for(int i=0; i<buttons.length; i++) {
-			buttons[i].addSelectionListener(new SelectionAdapter() {
+	public static void buttonF(Display display, ArrayList<Button> buttons, int ID) {
+		for(int i=0; i<buttons.size(); i++) {
+			buttons.get(i).addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					new TechnicalSheet(display, ID);

@@ -28,6 +28,8 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -137,6 +139,26 @@ public class EntreMenu2 {
 		gd_styledText.widthHint = 633;
 		styledText.setLayoutData(gd_styledText);
 		
+		combo.addTraverseListener(new TraverseListener() {
+			  @Override
+			  public void keyTraversed(TraverseEvent event) {
+			    if (event.detail == SWT.TRAVERSE_RETURN) {
+			      event.doit = false;
+			      text_1.setFocus();
+			    }
+			  }
+		});
+		
+		text_1.addTraverseListener(new TraverseListener() {
+			  @Override
+			  public void keyTraversed(TraverseEvent event) {
+			    if (event.detail == SWT.TRAVERSE_RETURN) {
+			      event.doit = false;
+			      styledText.setFocus();
+			    }
+			  }
+		});
+		
 		Button btnRetour = new Button(composite, SWT.NONE);
 		btnRetour.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -189,7 +211,7 @@ public class EntreMenu2 {
 				LocalDateTime now = LocalDateTime.now();
 				try {
 					Conn conn = new Conn();
-					ResultSet rs, rs1, rs2;
+					ResultSet rs, rs1, rs2, rs3;
 					int ProdId = 0;
 					int fourId = 0;
 					
@@ -214,15 +236,20 @@ public class EntreMenu2 {
 						rs2.close();
 					}
 					
-					q = " insert into entre (ProdID, fournisseurid, agentid, num, dateachat, note) values"
-							+ "(" + ProdId + "," + fourId + ","+ agent.getID() +","+ N +",'"+ dtf.format(now) +"','"+ note +"');";
+					q = " insert into entre (ProdID, fournisseurid, agentid, num, dateachat, note) values "
+							+ "(" + ProdId + ", " + fourId + ", "+ agent.getID() +", "+ N +", '"+ dtf.format(now) +"', '"+ note +"');";
 					conn.s.executeUpdate(q);
+					
+					q = "Select LAST_INSERT_ID();";
+					rs3 = conn.s.executeQuery(q);
+					rs3.next();
+					int I = rs3.getInt(1);
 					
 					q = "update Prod set Stock = Stock + " +N+ " Where Id =" +ProdId+ ";";
 					conn.s.executeUpdate(q);
 					
 					for(String SN : SNs) {
-						q = "insert into Produit (SN, ProdID) values (" + SN + ", " + ProdId + ");";
+						q = "insert into Produit (identre, SN, ProdID) values (" + I + ", " + SN + ", " + ProdId + ");";
 						conn.s.executeUpdate(q);
 					}
 					rs.close();

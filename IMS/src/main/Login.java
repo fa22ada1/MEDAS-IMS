@@ -144,7 +144,7 @@ public class Login {
 	private void LOGIN() {
 		lblComment.setText("confirmation ...");	
 		if(!text.getText().trim().equals("") & !text_1.getText().trim().equals("") ) {
-			int ID = Utilisateur.getID(text.getText(), text_1.getText());
+			int ID = Utilisateur.getID(text.getText().trim(), text_1.getText());
 			if (ID == -1) {
 				lblComment.setText("informations incorrectes");
 			} else {

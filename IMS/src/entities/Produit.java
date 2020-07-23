@@ -85,7 +85,7 @@ public class Produit {
 		try {
 			Conn conn = new Conn();
 			ResultSet rs;
-			String q = "Select SN from Produit where Prodid = " + ID + ";";
+			String q = "Select SN from Produit where Prodid = " + ID + " and idsortie is null;";
 			rs = conn.s.executeQuery(q);
 			while(rs.next()) {
 				SNs.add(Integer.toString(rs.getInt("SN")));
