@@ -27,8 +27,10 @@ import utils.Utils;
 public class Login {
 	Display display;
 	Shell shell;
+	
 	private Text text;
 	private Text text_1;
+	private Label lblComment;
 
 	private Login() {
 		display = new Display();
@@ -83,6 +85,16 @@ public class Login {
 			  }
 		});
 
+		text_1.addTraverseListener(new TraverseListener() {
+			  @Override
+			  public void keyTraversed(TraverseEvent event) {
+			    if (event.detail == SWT.TRAVERSE_RETURN) {
+			      event.doit = false;
+			      LOGIN();
+			    }
+			  }
+		});
+		
 		CLabel lblNewLabel = new CLabel(parent, SWT.NONE);
 		fd_canvas.left = new FormAttachment(lblNewLabel, 28);
 		FormData fd_lblNewLabel = new FormData();
@@ -107,7 +119,7 @@ public class Login {
 		
 		lblNewLabel.setBackground(Utils.PC1);
 		lblNewLabel.setImage(SWTResourceManager.getImage(Login.class, "/icons/medasims2.jpg"));
-		Label lblComment = new Label(parent, SWT.NONE);
+		lblComment = new Label(parent, SWT.NONE);
 		fd_canvas.bottom = new FormAttachment(100, -27);
 		lblComment.setAlignment(SWT.RIGHT);
 		lblComment.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -124,22 +136,26 @@ public class Login {
 		btnLogin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				lblComment.setText("confirmation ...");	
-				if(!text.getText().trim().equals("") & !text_1.getText().trim().equals("") ) {
-					int ID = Utilisateur.getID(text.getText(), text_1.getText());
-					if (ID == -1) {
-						lblComment.setText("informations incorrectes");
-					} else {
-						lblComment.setText("informations correctes");
-						Utilisateur agent = new Utilisateur(ID);
-						shell.setVisible(false);
-						new MainWindow(display, agent);
-					}
-				} else {
-					lblComment.setText("informations incompletes");
-				}
+				LOGIN();
 			}
 		});
+	}
+	
+	private void LOGIN() {
+		lblComment.setText("confirmation ...");	
+		if(!text.getText().trim().equals("") & !text_1.getText().trim().equals("") ) {
+			int ID = Utilisateur.getID(text.getText(), text_1.getText());
+			if (ID == -1) {
+				lblComment.setText("informations incorrectes");
+			} else {
+				lblComment.setText("informations correctes");
+				Utilisateur agent = new Utilisateur(ID);
+				shell.setVisible(false);
+				new MainWindow(display, agent);
+			}
+		} else {
+			lblComment.setText("informations incompletes");
+		}
 	}
 
 	public static void main(String[] args) {
