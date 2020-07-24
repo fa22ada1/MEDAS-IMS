@@ -9,12 +9,12 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.TraverseEvent;
 import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -22,9 +22,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 
 import entities.Utilisateur;
-import org.eclipse.wb.swt.SWTResourceManager;
 import utils.Conn;
 import utils.Utils;
 
@@ -188,6 +188,12 @@ public class EntreMenu {
 						if (text.getText().trim().contentEquals("") | text_1.getText().trim().contentEquals("")
 								| text_1.getText().trim().contentEquals("")) {
 							Error2.setText("veuillez remplir toutes les cases");
+							return;
+						}
+						try {
+							Long.parseLong(text_2.getText());
+						} catch (NumberFormatException ex) {
+							Error1.setText("veuillez entrer des nombres dans les cases des nombres");
 							return;
 						}
 						String q1 = "INSERT INTO Prod (Prodnom, Marque, PN, note) VALUES ('"

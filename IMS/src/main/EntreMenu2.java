@@ -42,7 +42,7 @@ public class EntreMenu2 {
 	private int PN;
 	private Text text_1;
 
-	public EntreMenu2(Display D, Shell shell1,int PN ,Utilisateur agent) {
+	public EntreMenu2(Display D, Shell shell1, int PN, Utilisateur agent) {
 		display = D;
 		shell = new Shell(display, SWT.CLOSE | SWT.TITLE);
 		this.shell1 = shell1;
@@ -62,7 +62,7 @@ public class EntreMenu2 {
 				display.sleep();
 		}
 	}
-	
+
 	@PostConstruct
 	private void create(Composite parent) {
 		parent.setLayout(new FormLayout());
@@ -75,24 +75,25 @@ public class EntreMenu2 {
 		fd_composite.top = new FormAttachment(0, 30);
 		fd_composite.left = new FormAttachment(0, 30);
 		composite.setLayoutData(fd_composite);
-		
+
 		Label lblDeclarerEntreDune = new Label(composite, SWT.NONE);
 		lblDeclarerEntreDune.setText("Declarer entre d'une piece");
 		new Label(composite, SWT.NONE);
-		
+
 		Label Error = new Label(composite, SWT.NONE);
+		Error.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		Error.setForeground(SWTResourceManager.getColor(SWT.COLOR_RED));
-		
+
 		Label lblNewLabel = new Label(composite, SWT.NONE);
 		lblNewLabel.setText("Nombre");
 		new Label(composite, SWT.NONE);
-		
+
 		Spinner spinner = new Spinner(composite, SWT.BORDER);
-		
+
 		Label lblNewLabel_1 = new Label(composite, SWT.NONE);
 		lblNewLabel_1.setText("Fournisseur");
 		new Label(composite, SWT.NONE);
-		
+
 		Combo combo = new Combo(composite, SWT.NONE);
 		ArrayList<String> four = new ArrayList<String>();
 		try {
@@ -100,65 +101,65 @@ public class EntreMenu2 {
 			ResultSet rs;
 			String q = "Select * from Fournisseur";
 			rs = conn.s.executeQuery(q);
-			while(rs.next()) {
+			while (rs.next()) {
 				four.add(rs.getString("label"));
 			}
 			rs.close();
 			conn.close();
-		} catch(Exception E) {
-    		E.printStackTrace();
-    	}			
+		} catch (Exception E) {
+			E.printStackTrace();
+		}
 		String[] Four = new String[four.size()];
-		for (int j = 0; j < four.size(); j++) { 
-	            Four[j] = four.get(j); 
-	    }
+		for (int j = 0; j < four.size(); j++) {
+			Four[j] = four.get(j);
+		}
 		combo.setItems(Four);
 		combo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-		
+
 		Label lblLesNombreDe = new Label(composite, SWT.NONE);
 		lblLesNombreDe.setText("les nombre de serie");
 		new Label(composite, SWT.NONE);
-		
+
 		text_1 = new Text(composite, SWT.BORDER);
 		text_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
-		
+
 		Label label = new Label(composite, SWT.NONE);
 		label.setLayoutData(new GridData(SWT.LEFT, SWT.FILL, true, false, 1, 1));
 		label.setText("(veuillez separer les NS par des \";\" si plusieurs pieces)");
 		label.setFont(SWTResourceManager.getFont("Segoe UI", 7, SWT.NORMAL));
-		
+
 		Label lblNote = new Label(composite, SWT.NONE);
 		lblNote.setText("Note");
 		new Label(composite, SWT.NONE);
 		new Label(composite, SWT.NONE);
-		
+
 		StyledText styledText = new StyledText(composite, SWT.BORDER);
 		GridData gd_styledText = new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1);
 		gd_styledText.widthHint = 633;
 		styledText.setLayoutData(gd_styledText);
-		
+
 		combo.addTraverseListener(new TraverseListener() {
-			  @Override
-			  public void keyTraversed(TraverseEvent event) {
-			    if (event.detail == SWT.TRAVERSE_RETURN) {
-			      event.doit = false;
-			      text_1.setFocus();
-			    }
-			  }
+			@Override
+			public void keyTraversed(TraverseEvent event) {
+				if (event.detail == SWT.TRAVERSE_RETURN) {
+					event.doit = false;
+					text_1.setFocus();
+				}
+			}
 		});
-		
+
 		text_1.addTraverseListener(new TraverseListener() {
-			  @Override
-			  public void keyTraversed(TraverseEvent event) {
-			    if (event.detail == SWT.TRAVERSE_RETURN) {
-			      event.doit = false;
-			      styledText.setFocus();
-			    }
-			  }
+			@Override
+			public void keyTraversed(TraverseEvent event) {
+				if (event.detail == SWT.TRAVERSE_RETURN) {
+					event.doit = false;
+					styledText.setFocus();
+				}
+			}
 		});
-		
+
 		Button btnRetour = new Button(composite, SWT.NONE);
 		btnRetour.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -174,11 +175,11 @@ public class EntreMenu2 {
 		});
 		btnRetour.setText("Retour");
 		new Label(composite, SWT.NONE);
-		
+
 		Composite composite_1 = new Composite(composite, SWT.NONE);
 		composite_1.setLayout(new FillLayout(SWT.HORIZONTAL));
 		composite_1.setLayoutData(new GridData(SWT.RIGHT, SWT.FILL, false, false, 1, 1));
-		
+
 		Button btnAnnuler = new Button(composite_1, SWT.CENTER);
 		btnAnnuler.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -191,19 +192,28 @@ public class EntreMenu2 {
 			}
 		});
 		btnAnnuler.setText("annuler");
-		
+
 		Button btnConfirmer = new Button(composite_1, SWT.NONE);
 		btnConfirmer.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				if(combo.getText().trim().contentEquals("") | spinner.getText().trim().contentEquals("") | text_1.getText().trim().contentEquals("")) {
+				if (combo.getText().trim().contentEquals("") | spinner.getText().trim().contentEquals("")
+						| text_1.getText().trim().contentEquals("")) {
 					Error.setText("veuillez remplir toutes les cases");
 					return;
 				}
 				int N = spinner.getSelection();
 				String note = styledText.getText();
 				String[] SNs = text_1.getText().trim().split(";");
-				if(SNs.length != N) {
+				for (String SN : SNs) {
+					try {
+						Long.parseLong(SN);
+					} catch (NumberFormatException ex) {
+						Error.setText("veuillez entrer des nombres dans les cases des nombres");
+						return;
+					}
+				}
+				if (SNs.length != N) {
 					Error.setText("veuillez verifier le nombre de SNs");
 					return;
 				}
@@ -214,17 +224,17 @@ public class EntreMenu2 {
 					ResultSet rs, rs1, rs2, rs3;
 					int ProdId = 0;
 					int fourId = 0;
-					
+
 					String q = "Select ID from Prod where PN = " + PN + ";";
 					rs = conn.s.executeQuery(q);
-					while(rs.next()) {
+					while (rs.next()) {
 						ProdId = rs.getInt("Id");
 					}
 					String four = combo.getText();
-					
+
 					q = "Select id from fournisseur where label ='" + four + "';";
 					rs1 = conn.s.executeQuery(q);
-					if(rs1.next()) {
+					if (rs1.next()) {
 						fourId = rs1.getInt("Id");
 					} else {
 						q = "insert into fournisseur (label) values ('" + four + "');";
@@ -235,31 +245,32 @@ public class EntreMenu2 {
 						fourId = rs2.getInt("Id");
 						rs2.close();
 					}
-					
-					q = " insert into entre (ProdID, fournisseurid, agentid, num, dateachat, note) values "
-							+ "(" + ProdId + ", " + fourId + ", "+ agent.getID() +", "+ N +", '"+ dtf.format(now) +"', '"+ note +"');";
+
+					q = " insert into entre (ProdID, fournisseurid, agentid, num, dateachat, note) values " + "("
+							+ ProdId + ", " + fourId + ", " + agent.getID() + ", " + N + ", '" + dtf.format(now)
+							+ "', '" + note + "');";
 					conn.s.executeUpdate(q);
-					
+
 					q = "Select LAST_INSERT_ID();";
 					rs3 = conn.s.executeQuery(q);
 					rs3.next();
 					int I = rs3.getInt(1);
-					
-					q = "update Prod set Stock = Stock + " +N+ " Where Id =" +ProdId+ ";";
+
+					q = "update Prod set Stock = Stock + " + N + " Where Id =" + ProdId + ";";
 					conn.s.executeUpdate(q);
-					
-					for(String SN : SNs) {
+
+					for (String SN : SNs) {
 						q = "insert into Produit (identre, SN, ProdID) values (" + I + ", " + SN + ", " + ProdId + ");";
 						conn.s.executeUpdate(q);
 					}
 					rs.close();
 					rs1.close();
 					conn.close();
-				} catch(Exception e1){
+				} catch (Exception e1) {
 					e1.printStackTrace();
 				}
 				shell.setVisible(false);
-			}			
+			}
 		});
 		btnConfirmer.setText("confirmer");
 	}

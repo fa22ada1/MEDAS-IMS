@@ -50,8 +50,8 @@ public class SortieMenu {
 		
 		shell.setSize(700,590);
         shell.setLocation(480,300);
-        shell.setImage(new Image(display, "src\\icons\\MEDASIMS_LOGO.ico"));
-        shell.setText("Menu declaration d'achat");
+		shell.setImage(new Image(display, "src\\icons\\MEDASIMS_LOGO.ico"));
+        shell.setText("Menu declaration de sortie de produit");
 		create(shell);
 		
 		shell.open();

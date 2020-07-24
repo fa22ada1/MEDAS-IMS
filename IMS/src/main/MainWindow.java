@@ -37,21 +37,22 @@ public class MainWindow {
 	private Utilisateur agent;
 	private Table table;
 	private Table table_1;
-	
+
 	private Menu menuBar, fileMenu, newMenu;
 	private MenuItem fileMenuHeader, fileRefreshItem, newMenuHeader;
 	private MenuItem fileExitItem, newEntreItem, newSortieItem;
-	
+
 	public MainWindow(Display display, Utilisateur agent) {
 		this.display = display;
 		this.agent = agent;
-		
+
 		shell = new Shell(display);
-		shell.setImage(new Image(display, "src\\icons\\Org-Logo.ico"));
-		shell.setText("Menu declaration d'achat");
+		shell.setImage(new Image(display, "src\\icons\\MEDASIMS_LOGO.ico"));
+		shell.setText("Stock courant");
+		shell.setSize(1200, 700);
 		createMenuBar();
 		create(shell);
-		
+
 		shell.open();
 		while (!shell.isDisposed()) {
 			if (!display.readAndDispatch())
@@ -64,191 +65,196 @@ public class MainWindow {
 	private void create(Composite parent) {
 		parent.setLayout(new GridLayout(1, false));
 		parent.setBackground(Utils.PC1);
-		
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setBackground(Utils.PC1);
 		composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		composite.setLayout(new FillLayout(SWT.HORIZONTAL));
-		
+
 		Label lblNewLabel_2 = new Label(composite, SWT.NONE);
 		lblNewLabel_2.setBackground(Utils.PC1);
 		lblNewLabel_2.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		lblNewLabel_2.setFont(SWTResourceManager.getFont("Tw Cen MT", 14, SWT.BOLD));
 		lblNewLabel_2.setText("MEDASIMS");
-		
+
 		Label label = new Label(composite, SWT.NONE);
 		label.setForeground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		label.setBackground(Utils.PC1);
 		label.setAlignment(SWT.RIGHT);
 		label.setText(agent.Tag());
-		
+
 		Composite composite_1 = new Composite(parent, SWT.NONE);
 		composite_1.setLayout(new GridLayout(1, false));
 		composite_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-		
+
 		Label lblNewLabel = new Label(composite_1, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
 		lblNewLabel.setText("  Stock courant");
-		
+
 		table = new Table(composite_1, SWT.FULL_SELECTION);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		table.setTouchEnabled(true);
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		
+
 		Label lblNewLabel_1 = new Label(composite_1, SWT.NONE);
 		lblNewLabel_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
 		lblNewLabel_1.setText("  Activit\u00E9s r\u00E9centes");
-		
+
 		table_1 = new Table(composite_1, SWT.BORDER | SWT.FULL_SELECTION);
 		table_1.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		table_1.setHeaderVisible(true);
-		
+
 		setTables();
 	}
-	
+
 	private void setTables() {
 		table.removeAll();
-		while ( table.getColumnCount() > 0 ) {
-		    table.getColumns()[ 0 ].dispose();
+		while (table.getColumnCount() > 0) {
+			table.getColumns()[0].dispose();
 		}
-		String[] titles = { "Produit", "Marque", "NP", "Stock", "..."};
-	    for (int i = 0; i < titles.length; i++) {
-	      TableColumn column = new TableColumn(table, SWT.NONE);
-	      column.setWidth(200);
-	      column.setText(titles[i]);
-	    }
-	    int[] IDs = Produit.allIDs();
-	    ArrayList<Button> buttons = new ArrayList<Button>();
-	    for(int ID : IDs) {
-	    	Produit P = new Produit(ID);
-	    	TableItem item = new TableItem(table,SWT.NONE);
-	    	item.setText(new String[]{P.getType() ,P.getMarque() ,Integer.toString(P.getPN()) ,Integer.toString(P.getStock())});
-	    	
-	    	TableEditor editor = new TableEditor(table);
-	    	Button button = new Button(table, SWT.PUSH);
-	    	button.setSize(new Point(30,30));
-	        editor.minimumWidth = button.getSize().x;
-	        button.pack();
-	        editor.horizontalAlignment = SWT.LEFT;
-	        editor.setEditor(button, item, 4);
-	        
-	        buttons.add(button);
-	        
-	        Utils.buttonF(display, buttons, ID);
-	    }
-	    
-	    table_1.removeAll();
-	    while ( table_1.getColumnCount() > 0 ) {
-		    table_1.getColumns()[ 0 ].dispose();
+		String[] titles = { "Produit", "Marque", "NP", "Stock", "..." };
+		for (int i = 0; i < titles.length; i++) {
+			TableColumn column = new TableColumn(table, SWT.NONE);
+			column.setWidth(200);
+			column.setText(titles[i]);
 		}
-		String[] titles1 = { "Type", "NP", "Nombre", "Agent", "Date", "Raport"};
-	    for (int i = 0; i < titles1.length; i++) {
-	      TableColumn column = new TableColumn(table_1, SWT.NONE);
-	      column.setWidth(200);
-	      column.setText(titles1[i]);
-	    }
-	    buttons = new ArrayList<Button>();
-	    try {
-	    	Conn conn = new Conn();	 
-	    	ResultSet rs;
-	    	String q = "Select prodid, agentid, num, dateachat as date, 'achat' as type "
-	    					+ "from entre "
-	    					+ "UNION "
-	    					+ "Select prodid, agentid, num, datesortie, label "
-	    					+ "from sortie "
-	    					+ "order by date;";
-	    	rs = conn.s.executeQuery(q);
-	    	while(rs.next()) {
-	    		TableItem item = new TableItem(table_1,SWT.NONE);
-	    		String type = rs.getString("type");
-	    		item.setText(new String[]{type ,Integer.toString(Produit.PNfromID(rs.getInt("prodid"))) ,Integer.toString(rs.getInt("num")) ,Utilisateur.TagfromID(rs.getInt("agentID")), rs.getString("date")});
-	    		item.setForeground(0, SWTResourceManager.getColor(SWT.COLOR_WHITE));
-	    		if(type.equals("achat")) {
-	    			item.setBackground(0, Utils.PC1);
-	    		} else {
-	    			item.setBackground(0, Utils.PC2);
-	    		}
-	    		
-	    		TableEditor editor = new TableEditor(table_1);
-		    	Button button = new Button(table_1, SWT.PUSH);
-		    	button.setSize(new Point(30,30));
-		        editor.minimumWidth = button.getSize().x;
-		        editor.horizontalAlignment = SWT.LEFT;
-		        editor.setEditor(button, item, 5);
-		        
-		        buttons.add(button);
-		        
-		        //Utils.buttonF(display, buttons, ID); TODO
-	    	}
-	    	rs.close();
+		int[] IDs = Produit.allIDs();
+		ArrayList<Button> buttons = new ArrayList<Button>();
+		for (int ID : IDs) {
+			Produit P = new Produit(ID);
+			TableItem item = new TableItem(table, SWT.NONE);
+			item.setText(new String[] { P.getType(), P.getMarque(), Integer.toString(P.getPN()),
+					Integer.toString(P.getStock()) });
+
+			TableEditor editor = new TableEditor(table);
+			Button button = new Button(table, SWT.PUSH);
+			button.setSize(new Point(30, 30));
+			editor.minimumWidth = button.getSize().x;
+			button.pack();
+			editor.horizontalAlignment = SWT.LEFT;
+			editor.setEditor(button, item, 4);
+
+			buttons.add(button);
+
+			Utils.buttonF(display, buttons, ID);
+		}
+
+		table_1.removeAll();
+		while (table_1.getColumnCount() > 0) {
+			table_1.getColumns()[0].dispose();
+		}
+		String[] titles1 = { "Type", "NP", "Nombre", "Agent", "Date"/*, "Raport"*/ };
+		for (int i = 0; i < titles1.length; i++) {
+			TableColumn column = new TableColumn(table_1, SWT.NONE);
+			column.setWidth(200);
+			column.setText(titles1[i]);
+		}
+		buttons = new ArrayList<Button>();
+		try {
+			Conn conn = new Conn();
+			ResultSet rs;
+			String q = "Select id, prodid, agentid, num, dateachat as date, 'achat' as type " + "from entre " + "UNION "
+					+ "Select id, prodid, agentid, num, datesortie, label " + "from sortie " + "order by date;";
+			rs = conn.s.executeQuery(q);
+			while (rs.next()) {
+				TableItem item = new TableItem(table_1, SWT.NONE);
+				String type = rs.getString("type");
+				item.setText(new String[] { type, Integer.toString(Produit.PNfromID(rs.getInt("prodid"))),
+						Integer.toString(rs.getInt("num")), Utilisateur.TagfromID(rs.getInt("agentID")),
+						rs.getString("date") });
+				item.setForeground(0, SWTResourceManager.getColor(SWT.COLOR_WHITE));
+				if (type.equals("achat")) {
+					item.setBackground(0, Utils.PC1);
+				} else {
+					item.setBackground(0, Utils.PC2);
+				}
+//				TODO activity report pdf sheet
+//	    		int ID = rs.getInt("id");	    		
+//	    		TableEditor editor = new TableEditor(table_1);
+//		    	Button button = new Button(table_1, SWT.PUSH);
+//		    	button.setSize(new Point(30,30));
+//		        editor.minimumWidth = button.getSize().x;
+//		        editor.horizontalAlignment = SWT.LEFT;
+//		        editor.setEditor(button, item, 5);
+//		        buttons.add(button);
+//		        Report.buttonF(buttons, ID, type);
+			}
+			rs.close();
 			conn.close();
-	    } catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void createMenuBar() {
 		menuBar = new Menu(shell, SWT.BAR);
 		shell.setMenuBar(menuBar);
-		
-	    fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
-	    fileMenuHeader.setText("&Fichier");
-	    fileMenu = new Menu(shell, SWT.DROP_DOWN);
-	    fileMenuHeader.setMenu(fileMenu);
-	    
-	    fileExitItem = new MenuItem(fileMenu, SWT.PUSH);
-	    fileExitItem.setText("&Sortir");
-	    
-	    fileRefreshItem = new MenuItem(fileMenu, SWT.PUSH);
-	    fileRefreshItem.setText("&Actualiser");
-	    
-	    fileExitItem.addSelectionListener(new fileExitItemListener());
-	    fileRefreshItem.addSelectionListener(new fileRefreshItemListener());
-	    
-	    newMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
-	    newMenuHeader.setText("&Nouveau");
-	    newMenu = new Menu(shell, SWT.DROP_DOWN);
-	    newMenuHeader.setMenu(newMenu);
-	    
-	    newEntreItem = new MenuItem(newMenu, SWT.PUSH);
-	    newEntreItem.setText("&D\u00E9clarer une entr\u00E9 de produit");
-	    
-	    newSortieItem = new MenuItem(newMenu, SWT.PUSH);
-	    newSortieItem.setText("&D\u00E9clarer une sortie de produit");
-	    
-	    newEntreItem.addSelectionListener(new newEntreItemListener());
-	    newSortieItem.addSelectionListener(new newSortieItemListener());
+
+		fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
+		fileMenuHeader.setText("&Fichier");
+		fileMenu = new Menu(shell, SWT.DROP_DOWN);
+		fileMenuHeader.setMenu(fileMenu);
+
+		fileExitItem = new MenuItem(fileMenu, SWT.PUSH);
+		fileExitItem.setText("&Sortir");
+
+		fileRefreshItem = new MenuItem(fileMenu, SWT.PUSH);
+		fileRefreshItem.setText("&Actualiser");
+
+		fileExitItem.addSelectionListener(new fileExitItemListener());
+		fileRefreshItem.addSelectionListener(new fileRefreshItemListener());
+
+		newMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
+		newMenuHeader.setText("&Nouveau");
+		newMenu = new Menu(shell, SWT.DROP_DOWN);
+		newMenuHeader.setMenu(newMenu);
+
+		newEntreItem = new MenuItem(newMenu, SWT.PUSH);
+		newEntreItem.setText("&D\u00E9clarer une entr\u00E9 de produit");
+
+		newSortieItem = new MenuItem(newMenu, SWT.PUSH);
+		newSortieItem.setText("&D\u00E9clarer une sortie de produit");
+
+		newEntreItem.addSelectionListener(new newEntreItemListener());
+		newSortieItem.addSelectionListener(new newSortieItemListener());
 	}
-	
+
 	class fileExitItemListener implements SelectionListener {
-	    public void widgetSelected(SelectionEvent event) {
-	    	shell.dispose();
-	    }
+		public void widgetSelected(SelectionEvent event) {
+			shell.dispose();
+		}
+
 		public void widgetDefaultSelected(SelectionEvent event) {
 			shell.dispose();
 		}
 	}
+
 	class fileRefreshItemListener implements SelectionListener {
-	    public void widgetSelected(SelectionEvent event) {
-	    	setTables();
-	    }
+		public void widgetSelected(SelectionEvent event) {
+			setTables();
+		}
+
 		public void widgetDefaultSelected(SelectionEvent event) {
 			setTables();
 		}
 	}
+
 	class newEntreItemListener implements SelectionListener {
-	    public void widgetSelected(SelectionEvent event) {
-	    	new EntreMenu(display, agent);
-	    }
+		public void widgetSelected(SelectionEvent event) {
+			new EntreMenu(display, agent);
+		}
+
 		public void widgetDefaultSelected(SelectionEvent event) {
 			new EntreMenu(display, agent);
 		}
 	}
+
 	class newSortieItemListener implements SelectionListener {
-	    public void widgetSelected(SelectionEvent event) {
-	    	new SortieMenu(display, agent);
-	    }
+		public void widgetSelected(SelectionEvent event) {
+			new SortieMenu(display, agent);
+		}
+
 		public void widgetDefaultSelected(SelectionEvent event) {
 			new SortieMenu(display, agent);
 		}

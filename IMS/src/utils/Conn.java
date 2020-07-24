@@ -11,16 +11,16 @@ public class Conn {
 	public static String dbName = "ims";
 	public static String dbUser = "root";
 	public static String dbPW = "oussama";
-	
+
 	public Conn() {
-    	try {	
-    		this.c = DriverManager.getConnection("jdbc:mysql://localhost/" + dbName, dbUser, dbPW);
-    		s = c.createStatement();
-    	} catch(Exception E) {
-    		E.printStackTrace();
-    	}
-    }
-	
+		try {
+			this.c = DriverManager.getConnection("jdbc:mysql://localhost/" + dbName, dbUser, dbPW);
+			s = c.createStatement();
+		} catch (Exception E) {
+			E.printStackTrace();
+		}
+	}
+
 	public void close() {
 		try {
 			s.close();

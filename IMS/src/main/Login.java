@@ -27,7 +27,7 @@ import utils.Utils;
 public class Login {
 	Display display;
 	Shell shell;
-	
+
 	private Text text;
 	private Text text_1;
 	private Label lblComment;
@@ -39,7 +39,7 @@ public class Login {
 		shell.setSize(800, 445);
 		shell.setLocation(480, 300);
 		shell.setImage(new Image(display, "src\\icons\\MEDASIMS_LOGO.ico"));
-		shell.setText("Menu declaration d'achat");
+		shell.setText("Login");
 		create(shell);
 
 		shell.open();
@@ -74,27 +74,27 @@ public class Login {
 
 		text_1 = new Text(canvas, SWT.PASSWORD);
 		text_1.setBounds(91, 214, 244, 31);
-		
+
 		text.addTraverseListener(new TraverseListener() {
-			  @Override
-			  public void keyTraversed(TraverseEvent event) {
-			    if (event.detail == SWT.TRAVERSE_RETURN) {
-			      event.doit = false;
-			      text_1.setFocus();
-			    }
-			  }
+			@Override
+			public void keyTraversed(TraverseEvent event) {
+				if (event.detail == SWT.TRAVERSE_RETURN) {
+					event.doit = false;
+					text_1.setFocus();
+				}
+			}
 		});
 
 		text_1.addTraverseListener(new TraverseListener() {
-			  @Override
-			  public void keyTraversed(TraverseEvent event) {
-			    if (event.detail == SWT.TRAVERSE_RETURN) {
-			      event.doit = false;
-			      LOGIN();
-			    }
-			  }
+			@Override
+			public void keyTraversed(TraverseEvent event) {
+				if (event.detail == SWT.TRAVERSE_RETURN) {
+					event.doit = false;
+					LOGIN();
+				}
+			}
 		});
-		
+
 		CLabel lblNewLabel = new CLabel(parent, SWT.NONE);
 		fd_canvas.left = new FormAttachment(lblNewLabel, 28);
 		FormData fd_lblNewLabel = new FormData();
@@ -116,7 +116,7 @@ public class Login {
 		});
 		btnAnnuler.setText("Annuler");
 		btnAnnuler.setBounds(230, 289, 105, 35);
-		
+
 		lblNewLabel.setBackground(Utils.PC1);
 		lblNewLabel.setImage(SWTResourceManager.getImage(Login.class, "/icons/medasims2.jpg"));
 		lblComment = new Label(parent, SWT.NONE);
@@ -130,8 +130,7 @@ public class Login {
 		fd_lblComment.left = new FormAttachment(0, 415);
 		fd_lblComment.right = new FormAttachment(100, -24);
 		lblComment.setLayoutData(fd_lblComment);
-		lblComment.setText("veuillez entrer vos informations ...");	
-		
+		lblComment.setText("veuillez entrer vos informations ...");
 
 		btnLogin.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -140,10 +139,10 @@ public class Login {
 			}
 		});
 	}
-	
+
 	private void LOGIN() {
-		lblComment.setText("confirmation ...");	
-		if(!text.getText().trim().equals("") & !text_1.getText().trim().equals("") ) {
+		lblComment.setText("confirmation ...");
+		if (!text.getText().trim().equals("") & !text_1.getText().trim().equals("")) {
 			int ID = Utilisateur.getID(text.getText().trim(), text_1.getText());
 			if (ID == -1) {
 				lblComment.setText("informations incorrectes");
